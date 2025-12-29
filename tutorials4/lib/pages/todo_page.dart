@@ -10,13 +10,14 @@ class TodoPage extends StatefulWidget {
 }
 
 TextEditingController _controller = TextEditingController();
+String _errorMessage = '';
 
 class _TodoPageState extends State<TodoPage> {
   //List of todo tasks
   List<List<dynamic>> toDoList = [
-    ["Make Tutorials", false],
-    ["Study MM", true],
-    ["Eating Lunch", false],
+    ["Learn MM", false],
+    ["Fight with Pukkie", false],
+    ["Finish 9 Hour Tutorial", false],
   ];
 
   //onCheckboxChanged
@@ -28,10 +29,17 @@ class _TodoPageState extends State<TodoPage> {
 
   void onSave() {
     setState(() {
-      toDoList.add([_controller.text, false]);
-
-      _controller.clear();
+      if (_controller.text.trim().isNotEmpty) {
+        toDoList.add([_controller.text, false]);
+        _errorMessage = '';
+        Navigator.pop(context);
+      } else if (_controller.text.trim().isEmpty) {
+        _errorMessage = 'Please add a text';
+      }
     });
+  }
+
+  void _onRemove() {
     Navigator.pop(context);
   }
 
@@ -40,13 +48,21 @@ class _TodoPageState extends State<TodoPage> {
       context: context,
       builder: (context) {
         return DialogBox(
+          errorMessage: _errorMessage,
           controller: _controller,
           onSave: () {
             onSave();
           },
+          onRemove: _onRemove,
         );
       },
     );
+  }
+
+  void deleteTask(int Index) {
+    setState(() {
+      toDoList.removeAt(Index);
+    });
   }
 
   @override
@@ -69,17 +85,22 @@ class _TodoPageState extends State<TodoPage> {
               onChanged: (value) {
                 onCheckboxChanged(value, index);
               },
+              deleteFunction: (context) => deleteTask(index),
             );
           },
         ),
       ),
       floatingActionButton: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: FloatingActionButton(
+        child: FloatingActionButton.extended(
+          elevation: 10,
+          backgroundColor: Colors.amber[500],
           onPressed: () {
-            return createNewTask();
+            createNewTask();
+            _controller.clear();
           },
-          child: Icon(Icons.add),
+          icon: Icon(Icons.add),
+          label: Text('Add Task'),
         ),
       ),
     );

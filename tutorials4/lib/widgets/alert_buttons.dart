@@ -8,9 +8,9 @@ class AlertButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FilledButton(
-      style: FilledButton.styleFrom(backgroundColor: Colors.pink),
+      style: FilledButton.styleFrom(backgroundColor: Colors.amber[800]),
       onPressed: onPressed,
-      child: Text(title),
+      child: Text(title, style: TextStyle(color: Colors.white)),
     );
   }
 }

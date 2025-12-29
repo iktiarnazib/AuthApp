@@ -4,14 +4,22 @@ import 'package:tutorials4/widgets/alert_buttons.dart';
 class DialogBox extends StatelessWidget {
   final controller;
   VoidCallback onSave;
-  DialogBox({super.key, required this.controller, required this.onSave});
+  VoidCallback onRemove;
+  final errorMessage;
+  DialogBox({
+    super.key,
+    required this.controller,
+    required this.onSave,
+    required this.onRemove,
+    required this.errorMessage,
+  });
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       backgroundColor: Colors.yellow[300],
       content: Container(
-        height: 130,
+        height: 150,
         width: double.infinity,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -20,6 +28,7 @@ class DialogBox extends StatelessWidget {
               padding: const EdgeInsets.all(10.0),
               child: TextField(
                 controller: controller,
+                autofocus: true,
                 decoration: InputDecoration(
                   hintText: 'Add a text Here',
                   border: OutlineInputBorder(
@@ -28,7 +37,10 @@ class DialogBox extends StatelessWidget {
                 ),
               ),
             ),
-
+            Text(
+              errorMessage,
+              style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -36,7 +48,7 @@ class DialogBox extends StatelessWidget {
                 AlertButtons(
                   title: 'Cancel',
                   onPressed: () {
-                    Navigator.pop(context);
+                    onRemove();
                   },
                 ),
                 const SizedBox(width: 5.0),
