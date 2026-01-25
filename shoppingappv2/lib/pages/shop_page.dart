@@ -1,27 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shoppingappv2/provider/products_provider.dart';
 import 'package:shoppingappv2/widgets/mydrawer.dart';
+import 'package:shoppingappv2/widgets/product_widget.dart';
 
-class ShopPage extends StatefulWidget {
+class ShopPage extends ConsumerStatefulWidget {
   const ShopPage({super.key});
 
   @override
-  State<ShopPage> createState() => _ShopPageState();
+  ConsumerState<ShopPage> createState() => _ShopPageState();
 }
 
-class _ShopPageState extends State<ShopPage> {
+class _ShopPageState extends ConsumerState<ShopPage> {
   @override
   Widget build(BuildContext context) {
+    final products = ref.watch(productProvider);
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: Text('Louis Vuitton'),
       ),
-      body: Center(
-        child: Text(
-          'This is Shop Page!',
-          style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-        ),
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: products.length,
+              itemBuilder: (BuildContext context, int index) {
+                return ProductWidget(
+                  name: products[index].name,
+                  price: products[index].price,
+                  description: products[index].description,
+                  image: products[index].imagePath,
+                );
+              },
+            ),
+          ),
+        ],
       ),
       drawer: Mydrawer(),
     );

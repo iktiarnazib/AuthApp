@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shoppingappv2/pages/cart_page.dart';
 import 'package:shoppingappv2/pages/intro_page.dart';
 import 'package:shoppingappv2/pages/shop_page.dart';
 import 'package:shoppingappv2/themes/themes.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(ProviderScope(child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {

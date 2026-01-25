@@ -7,6 +7,7 @@ class Mydrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      backgroundColor: Theme.of(context).colorScheme.surface,
       child: SafeArea(
         child: Column(
           children: [
@@ -27,13 +28,13 @@ class Mydrawer extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.only(left: 40.0, right: 40.0),
-              child: ListTile(
+              child: Mylisttile(
+                title: 'Cart',
+                icons: Icons.shopping_cart,
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.pushNamed(context, 'cartPage');
                 },
-                leading: Icon(Icons.shopping_cart),
-                title: Text('Cart'),
               ),
             ),
             Expanded(child: SizedBox()),
@@ -44,7 +45,9 @@ class Mydrawer extends StatelessWidget {
                 right: 40.0,
                 top: 40.0,
               ),
-              child: ListTile(
+              child: Mylisttile(
+                title: 'Exit',
+                icons: Icons.exit_to_app,
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.pushNamedAndRemoveUntil(
@@ -53,8 +56,6 @@ class Mydrawer extends StatelessWidget {
                     (route) => false,
                   );
                 },
-                leading: Icon(Icons.logout),
-                title: Text('Exit'),
               ),
             ),
           ],
