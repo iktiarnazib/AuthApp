@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shoppingappv2/provider/cart_provider.dart';
 import 'package:shoppingappv2/provider/products_provider.dart';
 import 'package:shoppingappv2/widgets/mydrawer.dart';
 import 'package:shoppingappv2/widgets/product_widget.dart';
@@ -15,6 +16,7 @@ class _ShopPageState extends ConsumerState<ShopPage> {
   @override
   Widget build(BuildContext context) {
     final products = ref.watch(productProvider);
+    // final cartProduct = ref.watch(cartProvider);
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
@@ -33,10 +35,14 @@ class _ShopPageState extends ConsumerState<ShopPage> {
                   price: products[index].price,
                   description: products[index].description,
                   image: products[index].imagePath,
+                  onTap: () {
+                    ref.read(cartProvider.notifier).addProduct(products[index]);
+                  },
                 );
               },
             ),
           ),
+          SizedBox(height: 300),
         ],
       ),
       drawer: Mydrawer(),

@@ -6,29 +6,25 @@ import 'package:shoppingappv2/models/product.dart';
 class CartNotifier extends Notifier<Set<Product>> {
   @override
   Set<Product> build() {
-    return {}; // প্রাথমিক স্টেট হিসেবে খালি সেট রিটার্ন করছে
+    return {};
   }
 
   void addProduct(Product product) {
-    // ইমিউটেবলি স্টেট আপডেট করা হচ্ছে
     state = {...state, product};
-    debugPrint('কার্ট সাইজ: ${state.length}');
+    debugPrint('Cart Size: ${state.length}');
   }
 
   void removeProduct(Product product) {
     state = state.where((e) => e.name != product.name).toSet();
-    debugPrint('কার্ট সাইজ: ${state.length}');
+    debugPrint('Cart Size: ${state.length}');
   }
 }
 
-// ম্যানুয়াল নটিফায়ার প্রোভাইডার
 final cartProvider = NotifierProvider<CartNotifier, Set<Product>>(() {
   return CartNotifier();
 });
 
-// ২. ডিপেন্ডেন্ট প্রোভাইডার (কার্ট টোটাল ক্যালকুলেশন)
 final cartTotalProvider = Provider<double>((ref) {
-  // cartProvider-কে ওয়াচ করা হচ্ছে, যাতে কার্টে কিছু যোগ হলে এটি অটো আপডেট হয়
   final cartProducts = ref.watch(cartProvider);
 
   double productTotal = 0;
