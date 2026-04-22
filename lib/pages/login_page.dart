@@ -4,18 +4,39 @@ import 'package:authenticationapp/components/square_tile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
+
   final TextEditingController passController = TextEditingController();
+
   final String hintUser = 'Username';
+
   final String hintPass = 'Password';
 
+  //Sign in method
   void onSignInUser() async {
+    //show loading circle
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const Center(child: CircularProgressIndicator());
+      },
+    );
+
+    //sign in try
     await FirebaseAuth.instance.signInWithEmailAndPassword(
       email: emailController.text,
       password: passController.text,
     );
+
+    Navigator.pop(context);
   }
 
   @override

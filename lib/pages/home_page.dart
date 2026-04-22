@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 class HomePage extends StatelessWidget {
   HomePage({super.key});
 
+  //current user
   final user = FirebaseAuth.instance.currentUser!;
 
+  //logout
   void onLogOutPressed() {
     FirebaseAuth.instance.signOut();
   }
