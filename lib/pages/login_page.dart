@@ -20,6 +20,8 @@ class _LoginPageState extends State<LoginPage> {
 
   final String hintPass = 'Password';
 
+  String firebaseErrorMessage = '';
+
   //Sign in method
   void onSignInUser() async {
     //show loading circle
@@ -29,14 +31,34 @@ class _LoginPageState extends State<LoginPage> {
         return const Center(child: CircularProgressIndicator());
       },
     );
-
+    String? message;
     //sign in try
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: emailController.text,
-      password: passController.text,
-    );
-
-    Navigator.pop(context);
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text,
+        password: passController.text,
+      );
+      if (mounted) {
+        Navigator.pop(context);
+        return;
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'invalid-credential') {
+        message = 'Invalid Credential, Please try again';
+      } else if (e.code == 'user-not-found') {
+        message = 'No User found for that email';
+      } else if (e.code == 'wrong-password') {
+        message = 'You have typed the wrong password';
+      } else {
+        message = 'Something went wrong, please try again...';
+      }
+    }
+    if (mounted) {
+      setState(() {
+        firebaseErrorMessage = message!;
+      });
+      Navigator.pop(context);
+    }
   }
 
   @override
@@ -82,6 +104,17 @@ class _LoginPageState extends State<LoginPage> {
                   hint: hintPass,
                   obscureText: true,
                 ),
+
+                if (firebaseErrorMessage.isNotEmpty)
+                  Column(
+                    children: [
+                      SizedBox(height: 7),
+                      Text(
+                        firebaseErrorMessage,
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    ],
+                  ),
                 const SizedBox(height: 10),
                 //forgot password?
                 Row(
