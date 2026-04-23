@@ -4,27 +4,31 @@ import 'package:authenticationapp/components/square_tile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatefulWidget {
+class RegisterPage extends StatefulWidget {
   final void Function()? onTap;
-  const LoginPage({super.key, required this.onTap});
+  const RegisterPage({super.key, required this.onTap});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController emailController = TextEditingController();
 
   final TextEditingController passController = TextEditingController();
+
+  final TextEditingController confirmPassController = TextEditingController();
 
   final String hintUser = 'Username';
 
   final String hintPass = 'Password';
 
+  final String hintConfirmPass = 'Confirm Password';
+
   String firebaseErrorMessage = '';
 
   //Sign in method
-  void onSignInUser() async {
+  void onSignUserUp() async {
     //show loading circle
     showDialog(
       context: context,
@@ -33,14 +37,24 @@ class _LoginPageState extends State<LoginPage> {
       },
     );
     String? message;
-    //sign in try
+    //creating the user
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text,
-        password: passController.text,
-      );
-      if (mounted) {
-        Navigator.pop(context);
+      if (passController.text == confirmPassController.text) {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text,
+          password: passController.text,
+        );
+        if (mounted) {
+          Navigator.pop(context);
+          return;
+        }
+      } else {
+        if (mounted) {
+          setState(() {
+            firebaseErrorMessage = 'Passwords doesn\'t match';
+          });
+          Navigator.pop(context);
+        }
         return;
       }
     } on FirebaseAuthException catch (e) {
@@ -76,13 +90,13 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 50),
 
                 //Logo
-                const Icon(Icons.lock, size: 100),
+                const Icon(Icons.lock, size: 50),
 
                 //space between
-                const SizedBox(height: 50),
+                const SizedBox(height: 25),
                 //Welcome Back, You've been missed!
                 Text(
-                  "Welcome Back, You've been missed!",
+                  'Let\'s create am account for you',
                   style: TextStyle(color: Colors.grey[700], fontSize: 16),
                 ),
 
@@ -106,6 +120,16 @@ class _LoginPageState extends State<LoginPage> {
                   obscureText: true,
                 ),
 
+                //space between
+                const SizedBox(height: 10),
+
+                //confirm password
+                MyTextField(
+                  controller: confirmPassController,
+                  hint: hintConfirmPass,
+                  obscureText: true,
+                ),
+
                 if (firebaseErrorMessage.isNotEmpty)
                   Column(
                     children: [
@@ -116,23 +140,23 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ],
                   ),
-                const SizedBox(height: 10),
-                //forgot password?
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 25.0),
-                      child: Text('Forgot Password?'),
-                    ),
-                  ],
-                ),
+
+                // //forgot password?
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.end,
+                //   children: [
+                //     Padding(
+                //       padding: const EdgeInsets.only(right: 25.0),
+                //       child: Text('Forgot Password?'),
+                //     ),
+                //   ],
+                // ),
 
                 //space between
                 const SizedBox(height: 25),
 
                 //sign in button
-                MySignInOutButton(onTap: onSignInUser, text: 'Sign In'),
+                MySignInOutButton(onTap: onSignUserUp, text: 'Sign Up'),
 
                 //Space Between
                 SizedBox(height: 50),
@@ -179,14 +203,14 @@ class _LoginPageState extends State<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Not a member?',
+                      'Already have an account?',
                       style: TextStyle(color: Colors.grey[700]),
                     ),
                     SizedBox(width: 4),
                     GestureDetector(
                       onTap: widget.onTap,
                       child: Text(
-                        'Register now',
+                        'Login  now',
                         style: TextStyle(
                           color: Colors.blue,
                           fontWeight: FontWeight.bold,

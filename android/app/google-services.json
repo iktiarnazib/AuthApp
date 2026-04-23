@@ -9,10 +9,15 @@
       "client_info": {
         "mobilesdk_app_id": "1:273957693891:android:ace7350f9236b7fb897576",
         "android_client_info": {
-          "package_name": "com.example.authenticationapp"
+          "package_name": "com.example.au thenticationapp"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "273957693891-evcv2a3m0qq4aa6rntip2lqpjvv5r6ub.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBKJHecVQa_G0dm7jZq3bfrx-qhH98u7Bw"
@@ -20,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "273957693891-evcv2a3m0qq4aa6rntip2lqpjvv5r6ub.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "273957693891-9470gfsen4r6laqv599bl5hdmrqkd3hm.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.authenticationapp"
+              }
+            }
+          ]
         }
       }
     }
