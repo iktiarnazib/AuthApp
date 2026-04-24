@@ -67,10 +67,7 @@ class _LoginPageState extends State<LoginPage> {
   void onAppleLogoPressed() {}
   bool isLoading = false;
   void onGoogleLogoPressed() async {
-    if (isLoading) return;
-    setState(() => isLoading = true);
     await AuthService().signInUsingGoogle();
-    setState(() => isLoading = false);
   }
 
   @override
