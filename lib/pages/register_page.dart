@@ -28,11 +28,17 @@ class _RegisterPageState extends State<RegisterPage> {
 
   String firebaseErrorMessage = '';
 
+  bool _isLoading = false;
   //Sign in method
   void onSignUserUp() async {
+    if (_isLoading) return;
+    setState(() {
+      _isLoading = true;
+    });
     //show loading circle
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) {
         return const Center(child: CircularProgressIndicator());
       },
@@ -53,6 +59,7 @@ class _RegisterPageState extends State<RegisterPage> {
         if (mounted) {
           setState(() {
             firebaseErrorMessage = 'Passwords doesn\'t match';
+            _isLoading = false;
           });
           Navigator.pop(context);
         }
@@ -74,6 +81,7 @@ class _RegisterPageState extends State<RegisterPage> {
     if (mounted) {
       setState(() {
         firebaseErrorMessage = message!;
+        _isLoading = false;
       });
       Navigator.pop(context);
     }
@@ -85,6 +93,7 @@ class _RegisterPageState extends State<RegisterPage> {
     if (mounted) {
       setState(() {
         firebaseErrorMessage = error ?? '';
+        _isLoading = false;
       });
     }
   }
@@ -210,12 +219,12 @@ class _RegisterPageState extends State<RegisterPage> {
                       imagePath: 'lib/images/googlelogo.png',
                       onTap: onGoogleLogoPressed,
                     ),
-                    SizedBox(width: 25),
-                    //apple button
-                    SquareTile(
-                      imagePath: 'lib/images/applelogo.png',
-                      onTap: onAppleLogoPressed,
-                    ),
+                    // SizedBox(width: 25),
+                    // //apple button
+                    // SquareTile(
+                    //   imagePath: 'lib/images/applelogo.png',
+                    //   onTap: onAppleLogoPressed,
+                    // ),
                   ],
                 ),
 

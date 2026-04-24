@@ -24,11 +24,17 @@ class _LoginPageState extends State<LoginPage> {
 
   String firebaseErrorMessage = '';
 
+  bool _isLoading = false;
   //Sign in method
   void onSignInUser() async {
+    if (_isLoading) return;
     //show loading circle
+    setState(() {
+      _isLoading = true;
+    });
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) {
         return const Center(child: CircularProgressIndicator());
       },
@@ -58,6 +64,7 @@ class _LoginPageState extends State<LoginPage> {
     if (mounted) {
       setState(() {
         firebaseErrorMessage = message!;
+        _isLoading = false;
       });
       Navigator.pop(context);
     }
@@ -182,12 +189,12 @@ class _LoginPageState extends State<LoginPage> {
                       imagePath: 'lib/images/googlelogo.png',
                       onTap: onGoogleLogoPressed,
                     ),
-                    SizedBox(width: 25),
-                    //apple button
-                    SquareTile(
-                      imagePath: 'lib/images/applelogo.png',
-                      onTap: onAppleLogoPressed,
-                    ),
+                    // SizedBox(width: 25),
+                    // //apple button
+                    // SquareTile(
+                    //   imagePath: 'lib/images/applelogo.png',
+                    //   onTap: onAppleLogoPressed,
+                    // ),
                   ],
                 ),
 
