@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
@@ -23,6 +24,16 @@ class AuthService {
       await FirebaseAuth.instance.signInWithCredential(credential);
       return null;
     } catch (e) {
+      return e.toString();
+    }
+  }
+
+  Future<String?> updateUserName(String newUserName) async {
+    try {
+      await FirebaseAuth.instance.currentUser?.updateDisplayName(newUserName);
+      await FirebaseAuth.instance.currentUser?.reload();
+      return null;
+    } on FirebaseAuthException catch (e) {
       return e.toString();
     }
   }
