@@ -48,7 +48,7 @@ class _LoginPageState extends State<LoginPage> {
       if (e.code == 'invalid-credential') {
         message = 'Invalid Credential, Please try again';
       } else if (e.code == 'user-not-found') {
-        message = 'No User found for that email';
+        message = 'No User found for this email';
       } else if (e.code == 'wrong-password') {
         message = 'You have typed the wrong password';
       } else {
@@ -65,9 +65,14 @@ class _LoginPageState extends State<LoginPage> {
 
   //on Apple logo sign in
   void onAppleLogoPressed() {}
-  bool isLoading = false;
+
   void onGoogleLogoPressed() async {
-    await AuthService().signInUsingGoogle();
+    final errror = await AuthService().signInUsingGoogle();
+    if (mounted) {
+      setState(() {
+        firebaseErrorMessage = errror ?? '';
+      });
+    }
   }
 
   @override

@@ -80,8 +80,13 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   //on google logo pressed
-  void onGoogleLogoPressed() {
-    AuthService().signInUsingGoogle();
+  void onGoogleLogoPressed() async {
+    final error = await AuthService().signInUsingGoogle();
+    if (mounted) {
+      setState(() {
+        firebaseErrorMessage = error ?? '';
+      });
+    }
   }
 
   //on apple logo pressed
